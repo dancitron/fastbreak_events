@@ -1,6 +1,7 @@
 'use client'
 
-import { Check, ChevronsUpDown, X } from 'lucide-react'
+import { Check, ChevronsUpDown, Plus, X } from 'lucide-react'
+import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -154,6 +155,17 @@ export function VenueCombobox({
                 </CommandGroup>
               )}
             </CommandList>
+            <div className="border-t border-zinc-700 p-2">
+              <Link
+                href="/venues/new"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 w-full px-2 py-1.5 text-sm text-orange-400 hover:text-orange-300 hover:bg-zinc-800 rounded-md transition-colors"
+              >
+                <Plus className="h-4 w-4" />
+                Create a stadium
+              </Link>
+            </div>
           </Command>
         </PopoverContent>
       </Popover>
