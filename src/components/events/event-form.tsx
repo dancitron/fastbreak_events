@@ -3,7 +3,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { format } from 'date-fns'
@@ -43,13 +43,20 @@ import { VenueCombobox } from '@/components/venues/venue-combobox'
 const eventFormSchema = z.object({
   name: z.string().min(1, 'Event name is required').max(100, 'Name is too long'),
   sport_type: z.string().min(1, 'Sport type is required'),
-  date: z.date({ required_error: 'Date is required' }),
+  date: z.date({ error: 'Date is required' }),
   time: z.string().min(1, 'Time is required'),
   description: z.string().max(500, 'Description is too long').optional(),
-  venue_ids: z.array(z.string()).default([]),
+  venue_ids: z.array(z.string()),
 })
 
-type EventFormData = z.infer<typeof eventFormSchema>
+type EventFormData = {
+  name: string
+  sport_type: string
+  date: Date
+  time: string
+  description?: string
+  venue_ids: string[]
+}
 
 interface EventFormProps {
   event?: EventWithVenues
@@ -68,7 +75,7 @@ export function EventForm({ event, onSubmit: onSubmitCallback, submitLabel }: Ev
   const eventTime = eventDate ? format(eventDate, 'HH:mm') : ''
 
   const form = useForm<EventFormData>({
-    resolver: zodResolver(eventFormSchema),
+    resolver: zodResolver(eventFormSchema) as Resolver<EventFormData>,
     defaultValues: {
       name: event?.name || '',
       sport_type: event?.sport_type || '',

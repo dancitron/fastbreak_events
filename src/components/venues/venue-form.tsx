@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { useForm, type Resolver } from 'react-hook-form'
 import * as z from 'zod'
 import { Button } from '@/components/ui/button'
 import {
@@ -57,7 +57,7 @@ export function VenueForm({
   )
 
   const form = useForm<VenueFormValues>({
-    resolver: zodResolver(venueFormSchema),
+    resolver: zodResolver(venueFormSchema) as Resolver<VenueFormValues>,
     defaultValues: {
       name: initialData?.name || '',
       address: initialData?.address || '',
