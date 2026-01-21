@@ -28,12 +28,41 @@ import { Badge } from '@/components/ui/badge'
 import { X, Loader2 } from 'lucide-react'
 
 const venueFormSchema = z.object({
-  name: z.string().min(1, 'Name is required').max(100, 'Name is too long'),
-  address: z.string().max(200, 'Address is too long').optional().or(z.literal('')),
-  city: z.string().max(100, 'City is too long').optional().or(z.literal('')),
-  state: z.string().max(50, 'State is too long').optional().or(z.literal('')),
-  zip_code: z.string().max(20, 'Zip code is too long').optional().or(z.literal('')),
-  capacity: z.number().int().positive().optional(),
+  name: z
+    .string()
+    .min(1, 'Name is required')
+    .max(100, 'Name is too long')
+    .regex(/^[a-zA-Z0-9\s\-'&.,()]+$/, 'Name contains invalid characters'),
+  address: z
+    .string()
+    .max(200, 'Address is too long')
+    .regex(/^[a-zA-Z0-9\s\-'.,#/]*$/, 'Address contains invalid characters')
+    .optional()
+    .or(z.literal('')),
+  city: z
+    .string()
+    .max(100, 'City is too long')
+    .regex(/^[a-zA-Z\s\-'.]*$/, 'City can only contain letters, spaces, hyphens, and apostrophes')
+    .optional()
+    .or(z.literal('')),
+  state: z
+    .string()
+    .max(50, 'State is too long')
+    .regex(/^[a-zA-Z\s\-]*$/, 'State can only contain letters, spaces, and hyphens')
+    .optional()
+    .or(z.literal('')),
+  zip_code: z
+    .string()
+    .max(10, 'Postal code is too long')
+    .regex(/^[a-zA-Z0-9\s\-]*$/, 'Postal code can only contain letters, numbers, spaces, and hyphens')
+    .optional()
+    .or(z.literal('')),
+  capacity: z
+    .number()
+    .int('Capacity must be a whole number')
+    .positive('Capacity must be a positive number')
+    .max(1000000, 'Capacity seems too large')
+    .optional(),
 })
 
 type VenueFormValues = z.infer<typeof venueFormSchema>
