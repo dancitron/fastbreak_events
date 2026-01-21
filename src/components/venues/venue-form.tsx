@@ -173,7 +173,19 @@ export function VenueForm({
               <FormItem>
                 <FormLabel>State</FormLabel>
                 <FormControl>
-                  <Input placeholder="State" {...field} />
+                  <Input
+                    placeholder="State"
+                    {...field}
+                    onKeyDown={(e) => {
+                      if (/[0-9]/.test(e.key)) {
+                        e.preventDefault()
+                      }
+                    }}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/[0-9]/g, '')
+                      field.onChange(value)
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
