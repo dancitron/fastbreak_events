@@ -13,7 +13,6 @@ import { AuthFormWrapper } from './auth-form-wrapper'
 export function LoginForm() {
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
 
   async function handleSubmit(formData: FormData) {
     setIsLoading(true)
